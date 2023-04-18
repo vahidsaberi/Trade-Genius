@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "9453067f-3ff4-409c-811c-a15835303401",
+    "Name": "New",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "97718483-6844-4ea2-a191-c405c6cb960a",
+    "Name": "Active",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "02a88338-41ec-4610-8487-7777db98d69f",
+    "Name": "Resolved",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "bdf32111-7a84-49a1-a268-7639548bc752",
+    "Name": "Done",
+    "Description": "Sample Data"
+  }
+]

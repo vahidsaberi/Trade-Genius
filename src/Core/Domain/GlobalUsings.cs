@@ -1,0 +1,1 @@
+﻿global using TradeGenius.WebApi.Domain.Common.Contracts;

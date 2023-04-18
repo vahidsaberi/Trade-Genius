@@ -1,0 +1,17 @@
+global using Ardalis.Specification;
+global using FluentValidation;
+global using TradeGenius.WebApi.Application.Common.Events;
+global using TradeGenius.WebApi.Application.Common.Exceptions;
+global using TradeGenius.WebApi.Application.Common.FileStorage;
+global using TradeGenius.WebApi.Application.Common.Interfaces;
+global using TradeGenius.WebApi.Application.Common.Models;
+global using TradeGenius.WebApi.Application.Common.Persistence;
+global using TradeGenius.WebApi.Application.Common.Specification;
+global using TradeGenius.WebApi.Application.Common.Validation;
+global using TradeGenius.WebApi.Domain.Catalog;
+global using TradeGenius.WebApi.Domain.Common;
+global using TradeGenius.WebApi.Domain.Common.Contracts;
+global using TradeGenius.WebApi.Shared.Notifications;
+global using MediatR;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;

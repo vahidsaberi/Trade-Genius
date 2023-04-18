@@ -1,0 +1,8 @@
+{
+  "DatabaseSettings": {
+    //"DBProvider": "postgresql",
+    //"ConnectionString": "Host=localhost;Port=5432;Database=trade-genius-Db;Username=postgres;Password=admin;Include Error Detail=true",
+    "DBProvider": "mssql",
+    "ConnectionString": "Data Source=.;Initial Catalog=Trade.Genius.DB;User ID=sa;Password=Bo!2bjaq;Encrypt=False;MultipleActiveResultSets=true;"
+  }
+}

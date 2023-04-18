@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "43bde507-2616-49e5-9dc8-4f5f12e87276",
+    "Name": "Category 1",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "36a2ad6f-d215-42a5-ac0c-deb67974042e",
+    "Name": "Category 2",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "cef043f6-c69a-41ac-b81d-32352d9d04b0",
+    "Name": "Category 3",
+    "Description": "Sample Data"
+  },
+  {
+    "Id": "73d8ac7a-2b85-4b6d-bf9e-fb519565307f",
+    "Name": "Category 4",
+    "Description": "Sample Data"
+  }
+]

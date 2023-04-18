@@ -1,0 +1,12 @@
+{
+  "$schema": "",
+  "settings": {
+    "orderingRules": {
+      "systemUsingDirectivesFirst": true,
+      "usingDirectivesPlacement": "outsideNamespace"
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "omit"
+    }
+  }
+}
