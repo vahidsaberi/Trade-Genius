@@ -40,3 +40,11 @@
 </details>
 
 ## Getting Started
+
+The database settings for the project are inside the "Configurations" folder in the "Host" project. Change the "database.json" and "hangfire.json" files accordingly.
+
+To create the database, run the following commands on the project you need inside the "Migrators" folder:
+
+update-database --context ApplicationDbContext
+update-database --context TenantDbContext
+After running the project, to generate a token, set the Tenant name to "root", username to "admin@root.com", and password to "Bo!2bjaq".
