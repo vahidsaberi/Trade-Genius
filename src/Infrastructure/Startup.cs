@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs.Initialization;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
+using TradeGenius.WebApi.Infrastructure.CoinCap;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -55,7 +56,8 @@ public static class Startup
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
             .AddRecurringBackgroundJobs()
-            .AddServices();
+            .AddServices()
+            .AddCoinCap(config);
     }
 
     private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>

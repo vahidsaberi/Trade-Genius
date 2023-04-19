@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Finbuckle.MultiTenant;
+using TradeGenius.WebApi.Application.Common.Interfaces;
 using TradeGenius.WebApi.Infrastructure.Common;
 using TradeGenius.WebApi.Shared.Multitenancy;
 using Hangfire.Client;
@@ -25,13 +26,15 @@ public class TradeGeniusJobFilter : IClientFilter
 
         using var scope = _services.CreateScope();
 
-        var httpContext = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
-        _ = httpContext ?? throw new InvalidOperationException("Can't create a TenantJob without HttpContext.");
+        var userId = scope.ServiceProvider.GetRequiredService<ICurrentUser>().GetUserId();
+
+        //var httpContext = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
+        //_ = httpContext ?? throw new InvalidOperationException("Can't create a TenantJob without HttpContext.");
 
         var tenantInfo = scope.ServiceProvider.GetRequiredService<ITenantInfo>();
         context.SetJobParameter(MultitenancyConstants.TenantIdName, tenantInfo);
 
-        string? userId = httpContext.User.GetUserId();
+        //string? userId = httpContext.User.GetUserId();
         context.SetJobParameter(QueryStringKeys.UserId, userId);
     }
 
