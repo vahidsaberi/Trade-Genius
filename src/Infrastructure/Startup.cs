@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs.Initialization;
+using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -52,6 +54,7 @@ public static class Startup
             .AddPersistence()
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
+            .AddRecurringBackgroundJobs()
             .AddServices();
     }
 
@@ -73,6 +76,14 @@ public static class Startup
 
         await scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>()
             .InitializeDatabasesAsync(cancellationToken);
+    }
+
+    public static async Task InitializeRecurringJobsAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
+    {
+        using var scope = services.CreateScope();
+
+        await scope.ServiceProvider.GetRequiredService<IRecurringJobInitialization>()
+            .InitializeJobsForTenantAsync(cancellationToken);
     }
 
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config) =>

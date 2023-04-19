@@ -39,7 +39,7 @@ internal class DatabaseInitializer : IDatabaseInitializer
         using var scope = _serviceProvider.CreateScope();
 
         // Then set current tenant so the right connectionstring is used
-        _serviceProvider.GetRequiredService<IMultiTenantContextAccessor>()
+        scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>()
             .MultiTenantContext = new MultiTenantContext<TradeGeniusTenantInfo>()
             {
                 TenantInfo = tenant
