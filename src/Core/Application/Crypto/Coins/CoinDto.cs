@@ -1,5 +1,6 @@
-﻿namespace TradeGenius.WebApi.Infrastructure.CoinCap.Models;
-public class Coin
+﻿namespace TradeGenius.WebApi.Application.Crypto.Coins;
+
+public class CoinDto
 {
     public string Id { get; set; }
     public string Rank { get; set; }

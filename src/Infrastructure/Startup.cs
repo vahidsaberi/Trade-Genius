@@ -23,7 +23,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs.Initialization;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 using TradeGenius.WebApi.Infrastructure.CoinCap;
 

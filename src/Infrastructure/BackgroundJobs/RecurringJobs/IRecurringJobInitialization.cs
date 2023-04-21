@@ -2,6 +2,6 @@
 
 public interface IRecurringJobInitialization
 {
-    void InitializeRecurringJobs();
+    void InitializeRecurringJobs(string tenantId);
     Task InitializeJobsForTenantAsync(CancellationToken cancellationToken);
 }

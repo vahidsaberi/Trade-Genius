@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradeGenius.WebApi.Application.Common.Mailing;
+﻿using TradeGenius.WebApi.Application.Crypto.Coins;
 
 namespace TradeGenius.WebApi.Application.Common.Brokering;
+
 public interface IBrokerService : ITransientService
 {
-    Task GetDataAsync(CancellationToken ct);
+    Task<List<CoinDto>> GetDataAsync(CancellationToken cancellationToken = default);
 }

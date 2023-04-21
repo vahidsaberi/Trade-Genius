@@ -32,11 +32,20 @@ public class TradeGeniusJobActivator : JobActivator
             ReceiveParameters();
         }
 
-        private void ReceiveParameters()
+        private async void ReceiveParameters()
         {
-            var tenantInfo = _context.GetJobParameter<TradeGeniusTenantInfo>(MultitenancyConstants.TenantIdName);
-            if (tenantInfo is not null)
+            string tenantId = _context.GetJobParameter<string>(MultitenancyConstants.TenantIdName);
+
+            if (tenantId is not null)
             {
+                var tenantContext = _scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+                var tenantInfo = await tenantContext.TenantInfo.FindAsync(tenantId);
+
+                if (tenantInfo is null)
+                {
+                    throw new InvalidOperationException("Tenant is not valid");
+                }
+
                 _scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>()
                     .MultiTenantContext = new MultiTenantContext<TradeGeniusTenantInfo>
                     {

@@ -1,10 +1,7 @@
-﻿using TradeGenius.WebApi.Infrastructure.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.Common;
 
-namespace TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs.Initialization;
-
+namespace TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 internal static class Startup
 {
     internal static IServiceCollection AddRecurringBackgroundJobs(this IServiceCollection services)

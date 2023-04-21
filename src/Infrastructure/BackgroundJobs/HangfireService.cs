@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
 using TradeGenius.WebApi.Application.Common.Interfaces;
 using Hangfire;
+using Namotion.Reflection;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace TradeGenius.WebApi.Infrastructure.BackgroundJobs;
 
@@ -30,20 +32,6 @@ public class HangfireService : IJobService
     public bool Requeue(string jobId, string fromState) =>
         BackgroundJob.Requeue(jobId, fromState);
 
-    public void AddOrUpdate(string id, Expression<Func<Task>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string qoeue) =>
-        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, qoeue);
-
-    public void AddOrUpdate<T>(string id, Expression<Func<T, Task>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string qoeue) =>
-        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, qoeue);
-    public void AddOrUpdate(string id, Expression<Action> methodCall, Func<string> cron, TimeZoneInfo timeZone, string qoeue) =>
-        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, qoeue);
-
-    public void AddOrUpdate<T>(string id, Expression<Action<T>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string qoeue) =>
-        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, qoeue);
-
-    public void RemoveIfExist(string jobId) =>
-        RecurringJob.RemoveIfExists(jobId);
-
     public string Schedule(Expression<Action> methodCall, TimeSpan delay) =>
         BackgroundJob.Schedule(methodCall, delay);
 
@@ -67,4 +55,19 @@ public class HangfireService : IJobService
 
     public string Schedule<T>(Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt) =>
         BackgroundJob.Schedule(methodCall, enqueueAt);
+
+    public void AddOrUpdate(string id, Expression<Func<Task>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string queue) =>
+        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, queue);
+
+    public void AddOrUpdate<T>(string id, Expression<Func<T, Task>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string queue) =>
+        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, queue);
+
+    public void AddOrUpdate(string id, Expression<Action> methodCall, Func<string> cron, TimeZoneInfo timeZone, string queue) =>
+        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, queue);
+
+    public void AddOrUpdate<T>(string id, Expression<Action<T>> methodCall, Func<string> cron, TimeZoneInfo timeZone, string queue) =>
+        RecurringJob.AddOrUpdate(id, methodCall, cron, timeZone, queue);
+
+    public void RemoveIfExist(string jobId) =>
+        RecurringJob.RemoveIfExists(jobId);
 }

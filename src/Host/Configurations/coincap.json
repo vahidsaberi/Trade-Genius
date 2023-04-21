@@ -1,6 +1,6 @@
 {
   "CoinCapSettings": {
-    "RESTfullAPI": "api.coincap.io/v2/",
+    "RESTfullAPI": "https://api.coincap.io/v2/",
     "WebSocket": "wss://ws.coincap.io/"
   }
 }

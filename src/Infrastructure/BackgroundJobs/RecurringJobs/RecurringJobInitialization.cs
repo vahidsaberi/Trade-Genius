@@ -1,8 +1,8 @@
 ﻿using Finbuckle.MultiTenant;
-using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 using TradeGenius.WebApi.Application.Common.Interfaces;
 using TradeGenius.WebApi.Infrastructure.Multitenancy;
 
@@ -27,6 +27,7 @@ public class RecurringJobInitialization : IRecurringJobInitialization
 
     public async Task InitializeJobsForTenantAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Hangfire: Initializing Recurring Jobs");
         foreach (var tenant in await _tenantDbContext.TenantInfo.ToListAsync(cancellationToken))
         {
             InitializeJobsForTenant(tenant);
@@ -46,13 +47,26 @@ public class RecurringJobInitialization : IRecurringJobInitialization
             };
 
         scope.ServiceProvider.GetRequiredService<IRecurringJobInitialization>()
-            .InitializeRecurringJobs();
+            .InitializeRecurringJobs(tenant.Identifier);
     }
 
-    public void InitializeRecurringJobs()
+    public void InitializeRecurringJobs(string tenantId)
     {
-        _jobService.AddOrUpdate<IJobRecurringService>("Id", x => x.CheckOut(), () => Cron.Minutely(), TimeZoneInfo.Utc, "default");
+        var interfaceType = typeof(IJobRecurringService);
 
-        _logger.LogInformation("All recurring jobs have been initialized.");
+        var interfaceTypes = AppDomain.CurrentDomain.GetAssemblies()
+               .SelectMany(s => s.GetTypes())
+               .Where(t => interfaceType.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+
+        foreach (var type in interfaceTypes)
+        {
+            var implement = ActivatorUtilities.CreateInstance(_serviceProvider, type) as IJobRecurringService;
+
+            Expression<Func<Task>> func = () => implement.CheckOut();
+
+            _jobService.AddOrUpdate($"{tenantId}-{implement.Id}", func, () => implement.Time, implement.TimeZone, implement.Qoeue);
+
+            _logger.LogInformation($"{tenantId}-{implement.Id}: All recurring jobs have been initialized.");
+        }
     }
 }
