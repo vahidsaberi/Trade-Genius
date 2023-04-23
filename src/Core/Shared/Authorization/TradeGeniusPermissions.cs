@@ -32,6 +32,8 @@ public static class TradeGeniusResource
     public const string Statuses = nameof(Statuses);
     public const string Tasks = nameof(Tasks);
     public const string TaskHistories = nameof(TaskHistories);
+
+    public const string PubSub = nameof(PubSub);
 }
 
 public static class TradeGeniusPermissions

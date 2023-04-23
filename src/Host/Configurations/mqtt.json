@@ -1,0 +1,13 @@
+{
+  "MqttSettings": {
+    "BrokerHostSettings": {
+      "Host": "localhost",
+      "Port": 1883
+    },
+
+    "ClientSettings": {
+      "UserName": "admin",
+      "Password": "Bo!2bjaq"
+    }
+  }
+}

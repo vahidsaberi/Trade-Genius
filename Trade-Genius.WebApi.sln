@@ -53,7 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "src\Core\Shared\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrators.SqLite", "src\Migrators\Migrators.SqLite\Migrators.SqLite.csproj", "{4881A50F-5C2B-4381-81FD-3ECA11450016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectToBrokers", "src\ConnectToBrokers\ConnectToBrokers.csproj", "{07EECDA2-924B-4F27-838E-3AE4984D2237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectToBrokers", "src\ConnectToBrokers\ConnectToBrokers.csproj", "{07EECDA2-924B-4F27-838E-3AE4984D2237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTServer", "src\MQTTServer\MQTTServer.csproj", "{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{07EECDA2-924B-4F27-838E-3AE4984D2237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07EECDA2-924B-4F27-838E-3AE4984D2237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07EECDA2-924B-4F27-838E-3AE4984D2237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{5B986063-2160-4F86-AF1D-7F97671146C5} = {225C0FD8-B796-4E9E-B1E7-0E4CD13F2E45}
 		{4881A50F-5C2B-4381-81FD-3ECA11450016} = {B778FB14-BDFD-454E-9FD7-5CE3572552B7}
 		{07EECDA2-924B-4F27-838E-3AE4984D2237} = {56B4195C-A86F-45DB-BAA5-8F974D17112D}
+		{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A} = {56B4195C-A86F-45DB-BAA5-8F974D17112D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0D80036-558A-4A3A-A0BE-00CED864A4DD}

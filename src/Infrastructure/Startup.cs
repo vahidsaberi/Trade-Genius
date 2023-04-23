@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 using TradeGenius.WebApi.Infrastructure.CoinCap;
+using TradeGenius.WebApi.Infrastructure.MQTTClient;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -56,7 +57,8 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddRecurringBackgroundJobs()
             .AddServices()
-            .AddCoinCap(config);
+            .AddCoinCap(config)
+            .AddMqttClientHostedService(config);
     }
 
     private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>
