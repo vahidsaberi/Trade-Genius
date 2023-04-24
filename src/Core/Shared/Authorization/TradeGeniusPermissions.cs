@@ -104,7 +104,9 @@ public static class TradeGeniusPermissions
         new("Update TaskHistories", TradeGeniusAction.Update, TradeGeniusResource.TaskHistories),
         new("Delete TaskHistories", TradeGeniusAction.Delete, TradeGeniusResource.TaskHistories),
         new("Generate TaskHistories", TradeGeniusAction.Generate, TradeGeniusResource.TaskHistories),
-        new("Clean TaskHistories", TradeGeniusAction.Clean, TradeGeniusResource.TaskHistories)
+        new("Clean TaskHistories", TradeGeniusAction.Clean, TradeGeniusResource.TaskHistories),
+
+        new("Create PubSub", TradeGeniusAction.Create, TradeGeniusResource.PubSub)
     };
 
     public static IReadOnlyList<TradeGeniusPermission> All { get; } = new ReadOnlyCollection<TradeGeniusPermission>(_all);

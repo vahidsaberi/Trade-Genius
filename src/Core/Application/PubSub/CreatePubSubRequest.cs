@@ -28,8 +28,6 @@ public class CreatePubSubRequestHandler : IRequestHandler<CreatePubSubRequest, b
 
     public async Task<bool> Handle(CreatePubSubRequest request, CancellationToken cancellationToken)
     {
-        _service.MessageSendAsync(request.Topic, request.Content);
-
-        return true;
+        return await _service.PublishAsync(request.Topic, request.Content);
     }
 }

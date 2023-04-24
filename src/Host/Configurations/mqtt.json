@@ -8,6 +8,10 @@
     "ClientSettings": {
       "UserName": "admin",
       "Password": "Bo!2bjaq"
-    }
+    },
+
+    "Topics": [
+      "CoinCap"
+    ]
   }
 }

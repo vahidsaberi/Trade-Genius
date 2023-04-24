@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Hangfire;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Client;
+using TradeGenius.WebApi.Infrastructure.MQTTClient.SettingsModel;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
 
@@ -11,7 +13,10 @@ internal static class Startup
     {
         //services.AddSingleton<MqttService>();
 
+        services.Configure<MqttSettings>(config.GetSection(nameof(MqttSettings)));
+
         var settings = config.GetSection(nameof(MqttSettings)).Get<MqttSettings>();
+        if (settings is null) throw new Exception("MQTT client is not configured.");
 
         services.AddMqttClientServiceWithConfig(aspOptionBuilder =>
         {

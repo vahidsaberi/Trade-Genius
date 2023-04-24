@@ -1,58 +1,47 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Packets;
 using MQTTnet.Protocol;
 using System.Text;
 using TradeGenius.WebApi.Application.Common.Interfaces.MQTT;
+using TradeGenius.WebApi.Infrastructure.MQTTClient.SettingsModel;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
 
 public class MqttClientService : IMqttClientService
 {
-    private readonly IMqttClient mqttClient;
-    private readonly MqttClientOptions options;
+    private readonly IMqttClient _mqttClient;
+    private readonly MqttClientOptions _options;
     private readonly ILogger<MqttClientService> _logger;
+    private readonly MqttSettings _settings;
 
-    public MqttClientService(MqttClientOptions options, ILogger<MqttClientService> logger)
+    public MqttClientService(MqttClientOptions options, ILogger<MqttClientService> logger, IOptions<MqttSettings> settings)
     {
-        this.options = options;
-        mqttClient = new MqttFactory().CreateMqttClient();
+        this._options = options;
+        _mqttClient = new MqttFactory().CreateMqttClient();
         _logger = logger;
+        _settings = settings.Value;
+
         ConfigureMqttClient();
     }
 
     private void ConfigureMqttClient()
     {
-        mqttClient.ConnectedAsync += HandleConnectedAsync;
-        mqttClient.DisconnectedAsync += HandleDisconnectedAsync;
-        mqttClient.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
-    }
-
-    public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
-    {
-        var message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload);
-
-        throw new System.NotImplementedException();
-    }
-
-    public async Task MessageSendAsync(string topic, string message)
-    {
-        var msg = new MqttApplicationMessage
-        {
-            Topic = topic,
-            Payload = Encoding.UTF8.GetBytes(message),
-            QualityOfServiceLevel = MqttQualityOfServiceLevel.ExactlyOnce,
-            Retain = false
-        };
-
-        await mqttClient.PublishAsync(msg);
+        _mqttClient.ConnectedAsync += HandleConnectedAsync;
+        _mqttClient.DisconnectedAsync += HandleDisconnectedAsync;
+        _mqttClient.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
     }
 
     public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs)
     {
         _logger.LogInformation("connected");
 
-        await mqttClient.SubscribeAsync("Connected...");
+        //await _mqttClient.SubscribeAsync("Connected...");
+
+        var reult = await this.SubscribeAsync(_settings.Topics);
     }
 
     public async Task HandleDisconnectedAsync(MqttClientDisconnectedEventArgs eventArgs)
@@ -75,9 +64,16 @@ public class MqttClientService : IMqttClientService
         await Task.CompletedTask;
     }
 
+    public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+    {
+        var message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload);
+
+        throw new System.NotImplementedException();
+    }
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await mqttClient.ConnectAsync(options);
+        await _mqttClient.ConnectAsync(_options);
 
         #region Reconnect_Using_Timer:https://github.com/dotnet/MQTTnet/blob/master/Samples/Client/Client_Connection_Samples.cs
         /* 
@@ -94,9 +90,9 @@ public class MqttClientService : IMqttClientService
                try
                {
                    // This code will also do the very first connect! So no call to _ConnectAsync_ is required in the first place.
-                   if (!await mqttClient.TryPingAsync())
+                   if (!await _mqttClient.TryPingAsync())
                    {
-                       await mqttClient.ConnectAsync(mqttClient.Options, CancellationToken.None);
+                       await _mqttClient.ConnectAsync(_mqttClient.Options, CancellationToken.None);
 
                        // Subscribe to topics when session is clean etc.
                        _logger.LogInformation("The MQTT client is connected.");
@@ -127,8 +123,83 @@ public class MqttClientService : IMqttClientService
                 Reason = MqttClientDisconnectReason.NormalDisconnection,
                 ReasonString = "NormalDiconnection"
             };
-            await mqttClient.DisconnectAsync(disconnectOption, cancellationToken);
+            await _mqttClient.DisconnectAsync(disconnectOption, cancellationToken);
         }
-        await mqttClient.DisconnectAsync();
+        await _mqttClient.DisconnectAsync();
+    }
+
+    public async Task<bool> SubscribeAsync(List<string> topics)
+    {
+        try
+        {
+            if (topics is null || !topics.Any()) return false;
+
+            var so = new MqttClientSubscribeOptions();
+
+            var tpcs = new List<MqttTopicFilter>();
+
+            topics.ForEach(topic =>
+            {
+                tpcs.Add(new MqttTopicFilter
+                {
+                    Topic = topic,
+                    QualityOfServiceLevel = MqttQualityOfServiceLevel.ExactlyOnce
+                });
+            });
+
+            so.TopicFilters = tpcs;
+
+            var result = await _mqttClient.SubscribeAsync(so);
+
+            return result.Items.Any();
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> UnsubscribeAsync(List<string> topics)
+    {
+
+        try
+        {
+            if (topics is null || !topics.Any()) return false;
+
+            var so = new MqttClientUnsubscribeOptions
+            {
+                TopicFilters = topics
+            };
+
+            var result = await _mqttClient.UnsubscribeAsync(so);
+
+            return result.Items.Any();
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> PublishAsync(string topic, string message)
+    {
+        try
+        {
+            var msg = new MqttApplicationMessage
+            {
+                Topic = topic,
+                Payload = Encoding.UTF8.GetBytes(message),
+                QualityOfServiceLevel = MqttQualityOfServiceLevel.ExactlyOnce,
+                Retain = false
+            };
+
+            var result = await _mqttClient.PublishAsync(msg);
+
+            return result.IsSuccess;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }
