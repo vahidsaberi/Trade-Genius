@@ -5,8 +5,10 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Packets;
 using MQTTnet.Protocol;
+using Newtonsoft.Json;
 using System.Text;
-using TradeGenius.WebApi.Application.Common.Interfaces.MQTT;
+using TradeGenius.WebApi.Application.Common.MQTT;
+using TradeGenius.WebApi.Application.Crypto.Coins;
 using TradeGenius.WebApi.Infrastructure.MQTTClient.SettingsModel;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
@@ -39,9 +41,7 @@ public class MqttClientService : IMqttClientService
     {
         _logger.LogInformation("connected");
 
-        //await _mqttClient.SubscribeAsync("Connected...");
-
-        var reult = await this.SubscribeAsync(_settings.Topics);
+        await this.SubscribeAsync(_settings.Topics);
     }
 
     public async Task HandleDisconnectedAsync(MqttClientDisconnectedEventArgs eventArgs)
@@ -67,6 +67,14 @@ public class MqttClientService : IMqttClientService
     public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
         var message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload);
+
+        switch(Enum.Parse<MqttTopics>(eventArgs.ApplicationMessage.Topic))
+        {
+            case MqttTopics.CoinCap:
+                var data = JsonConvert.DeserializeObject<List<CoinDto>>(message);
+                break;
+
+        }
 
         throw new System.NotImplementedException();
     }
@@ -181,13 +189,13 @@ public class MqttClientService : IMqttClientService
         }
     }
 
-    public async Task<bool> PublishAsync(string topic, string message)
+    public async Task<bool> PublishAsync(MqttTopics topic, string message)
     {
         try
         {
             var msg = new MqttApplicationMessage
             {
-                Topic = topic,
+                Topic = topic.ToString(),
                 Payload = Encoding.UTF8.GetBytes(message),
                 QualityOfServiceLevel = MqttQualityOfServiceLevel.ExactlyOnce,
                 Retain = false

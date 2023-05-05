@@ -36,7 +36,9 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         var applicationAssembly = typeof(TradeGenius.WebApi.Application.Startup).GetTypeInfo().Assembly;
+
         MapsterSettings.Configure();
+
         return services
             .AddApiVersioning()
             .AddAuth(config)

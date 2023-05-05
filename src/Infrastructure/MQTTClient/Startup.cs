@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Client;
+using TradeGenius.WebApi.Application.Common.MQTT;
 using TradeGenius.WebApi.Infrastructure.MQTTClient.SettingsModel;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
@@ -11,8 +12,6 @@ internal static class Startup
 {
     public static IServiceCollection AddMqttClientHostedService(this IServiceCollection services, IConfiguration config)
     {
-        //services.AddSingleton<MqttService>();
-
         services.Configure<MqttSettings>(config.GetSection(nameof(MqttSettings)));
 
         var settings = config.GetSection(nameof(MqttSettings)).Get<MqttSettings>();
@@ -25,6 +24,7 @@ internal static class Startup
             .WithClientId(Guid.NewGuid().ToString())
             .WithTcpServer(settings.BrokerHostSettings.Host, settings.BrokerHostSettings.Port);
         });
+
         return services;
     }
 
@@ -36,17 +36,21 @@ internal static class Startup
             configure(optionBuilder);
             return optionBuilder.Build();
         });
+
         services.AddSingleton<MqttClientService>();
+
         services.AddSingleton<IHostedService>(serviceProvider =>
         {
             return serviceProvider.GetService<MqttClientService>();
         });
+
         services.AddSingleton<MqttClientServiceProvider>(serviceProvider =>
         {
             var mqttClientService = serviceProvider.GetService<MqttClientService>();
             var mqttClientServiceProvider = new MqttClientServiceProvider(mqttClientService);
             return mqttClientServiceProvider;
         });
+
         return services;
     }
 }

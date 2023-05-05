@@ -5,9 +5,6 @@
         <AssemblyName>TradeGenius.WebApi.Infrastructure</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="MQTTClient\MqttService.cs" />
-    </ItemGroup>
-    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>

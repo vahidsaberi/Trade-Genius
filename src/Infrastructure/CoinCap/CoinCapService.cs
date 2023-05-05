@@ -11,23 +11,19 @@ public class CoinCapService : IBrokerService
     private readonly CoinCapSettings _settings;
     private readonly ILogger<CoinCapService> _logger;
 
-    public CoinCapService(IOptions<CoinCapSettings> settings, ILogger<CoinCapService> logger)
-    {
-        _settings = settings.Value;
-        _logger = logger;
-    }
+    public CoinCapService(IOptions<CoinCapSettings> settings, ILogger<CoinCapService> logger) =>
+        (_settings, _logger) = (settings.Value, logger);
 
     public async Task<List<CoinDto>> GetDataAsync(CancellationToken cancellationToken = default)
     {
         var coins = new List<CoinDto>();
+
         try
         {
             var client = new HttpClient();
             string response = await client.GetStringAsync(_settings.RESTfullAPI + "assets");
 
             coins = JObject.Parse(response)["data"].Select(d => d.ToObject<CoinDto>()).ToList();
-
-            return coins;
         }
         catch (Exception ex)
         {

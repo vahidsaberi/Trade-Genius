@@ -1,4 +1,4 @@
-﻿using TradeGenius.WebApi.Application.Common.Interfaces.MQTT;
+﻿using TradeGenius.WebApi.Application.Common.MQTT;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
 
