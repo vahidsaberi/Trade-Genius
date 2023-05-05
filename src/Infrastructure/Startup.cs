@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 using TradeGenius.WebApi.Infrastructure.CoinCap;
+using TradeGenius.WebApi.Infrastructure.MQTTClient;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -35,7 +36,9 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         var applicationAssembly = typeof(TradeGenius.WebApi.Application.Startup).GetTypeInfo().Assembly;
+
         MapsterSettings.Configure();
+
         return services
             .AddApiVersioning()
             .AddAuth(config)
@@ -56,7 +59,8 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddRecurringBackgroundJobs()
             .AddServices()
-            .AddCoinCap(config);
+            .AddCoinCap(config)
+            .AddMqttClientHostedService(config);
     }
 
     private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>
