@@ -71,7 +71,7 @@ public class MqttClientService : IMqttClientService
         switch(Enum.Parse<MqttTopics>(eventArgs.ApplicationMessage.Topic))
         {
             case MqttTopics.CoinCap:
-                var data = JsonConvert.DeserializeObject<List<CoinDto>>(message);
+                var data = JsonConvert.DeserializeObject<List<CoinCapDto>>(message);
                 break;
 
         }

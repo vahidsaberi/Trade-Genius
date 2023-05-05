@@ -4,5 +4,5 @@ namespace TradeGenius.WebApi.Application.Common.Brokering;
 
 public interface IBrokerService : ITransientService
 {
-    Task<List<CoinDto>> GetDataAsync(CancellationToken cancellationToken = default);
+    Task<List<CoinCapDto>> GetDataAsync(CancellationToken cancellationToken = default);
 }
