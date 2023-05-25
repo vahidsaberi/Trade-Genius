@@ -34,6 +34,10 @@ internal static class Startup
                 .AddJsonFile($"{configurationsDirectory}/localization.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/coincap.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/coincap.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/yahoofinancial.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/yahoofinancial.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/cryptocompare.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/cryptocompare.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/mqtt.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/mqtt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();

@@ -24,8 +24,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
-using TradeGenius.WebApi.Infrastructure.CoinCap;
 using TradeGenius.WebApi.Infrastructure.MQTTClient;
+using TradeGenius.WebApi.Infrastructure.Indicators;
+using TradeGenius.WebApi.Infrastructure.CryptoCurrency.CoinCap;
+using TradeGenius.WebApi.Infrastructure.CryptoCurrency.CryptoCompare;
+using TradeGenius.WebApi.Infrastructure.CryptoCurrency;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -59,8 +62,9 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddRecurringBackgroundJobs()
             .AddServices()
-            .AddCoinCap(config)
-            .AddMqttClientHostedService(config);
+            .AddCryptoCurrencyService(config)
+            .AddMqttClientHostedService(config)
+            .AddIndicators(config);
     }
 
     private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Text;
 using TradeGenius.WebApi.Application.Common.MQTT;
 using TradeGenius.WebApi.Application.Crypto.Coins;
+using TradeGenius.WebApi.Application.Crypto.Interfaces;
 using TradeGenius.WebApi.Infrastructure.MQTTClient.SettingsModel;
 
 namespace TradeGenius.WebApi.Infrastructure.MQTTClient;
@@ -19,13 +20,19 @@ public class MqttClientService : IMqttClientService
     private readonly MqttClientOptions _options;
     private readonly ILogger<MqttClientService> _logger;
     private readonly MqttSettings _settings;
+    private readonly ISignalCreatorService _signalCreator;
 
-    public MqttClientService(MqttClientOptions options, ILogger<MqttClientService> logger, IOptions<MqttSettings> settings)
+    public MqttClientService(
+        ILogger<MqttClientService> logger,
+        MqttClientOptions options,
+        IOptions<MqttSettings> settings,
+        ISignalCreatorService signalCreator)
     {
-        this._options = options;
-        _mqttClient = new MqttFactory().CreateMqttClient();
         _logger = logger;
+        _options = options;
         _settings = settings.Value;
+        _mqttClient = new MqttFactory().CreateMqttClient();
+        _signalCreator = signalCreator;
 
         ConfigureMqttClient();
     }
@@ -64,7 +71,7 @@ public class MqttClientService : IMqttClientService
         await Task.CompletedTask;
     }
 
-    public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+    public async Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
         var message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload);
 
@@ -72,11 +79,11 @@ public class MqttClientService : IMqttClientService
         {
             case MqttTopics.CoinCap:
                 var data = JsonConvert.DeserializeObject<List<CoinCapDto>>(message);
+                await _signalCreator.CalculateStrategi();
                 break;
-
+            case MqttTopics.ServerTime:
+                break;
         }
-
-        throw new System.NotImplementedException();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -119,7 +126,6 @@ public class MqttClientService : IMqttClientService
            }
        });
         #endregion
-
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

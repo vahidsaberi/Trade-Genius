@@ -1,8 +1,6 @@
-﻿using TradeGenius.WebApi.Application.Crypto.Coins;
+﻿namespace TradeGenius.WebApi.Application.Common.Brokering;
 
-namespace TradeGenius.WebApi.Application.Common.Brokering;
-
-public interface IBrokerService : ITransientService
+public interface IBrokerService
 {
-    Task<List<CoinCapDto>> GetDataAsync(CancellationToken cancellationToken = default);
+    Task<dynamic> GetDataAsync(CancellationToken cancellationToken = default);
 }

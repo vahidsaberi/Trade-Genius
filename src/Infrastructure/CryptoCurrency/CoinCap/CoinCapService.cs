@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using TradeGenius.WebApi.Application.Common.Brokering;
 using TradeGenius.WebApi.Application.Crypto.Coins;
 
-namespace TradeGenius.WebApi.Infrastructure.CoinCap;
+namespace TradeGenius.WebApi.Infrastructure.CryptoCurrency.CoinCap;
 
 public class CoinCapService : IBrokerService
 {
@@ -14,7 +14,7 @@ public class CoinCapService : IBrokerService
     public CoinCapService(IOptions<CoinCapSettings> settings, ILogger<CoinCapService> logger) =>
         (_settings, _logger) = (settings.Value, logger);
 
-    public async Task<List<CoinCapDto>> GetDataAsync(CancellationToken cancellationToken = default)
+    public async Task<dynamic> GetDataAsync(CancellationToken cancellationToken = default)
     {
         var coins = new List<CoinCapDto>();
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradeGenius.WebApi.Application.Crypto.Enums;
-using TradeGenius.WebApi.Application.Crypto.Indicators;
+﻿using TradeGenius.WebApi.Application.Crypto.Enums;
+using TradeGenius.WebApi.Application.Crypto.Interfaces;
+using TradeGenius.WebApi.Application.Crypto.Models;
 using TradeGenius.WebApi.Domain.CryptoCurrency;
 
 namespace TradeGenius.WebApi.Infrastructure.Indicators;
