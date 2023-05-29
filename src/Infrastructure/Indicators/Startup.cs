@@ -10,9 +10,9 @@ internal static class Startup
 {
     internal static IServiceCollection AddIndicators(this IServiceCollection services, IConfiguration config)
     {
-        services.AddTransient<IIndicator, MovingAverage>();
-        services.AddTransient<IIndicator, MovingAverageConvergenceDivergence>();
-        services.AddTransient<IIndicator, RelativeStrengthIndex>();
+        services.AddTransient<MovingAverage>();
+        services.AddTransient<MovingAverageConvergenceDivergence>();
+        services.AddTransient<RelativeStrengthIndex>();
 
         services.AddSingleton<Func<IndicatorTypes, IndicatorConfig, IIndicator>>(provider => (key, config) =>
         {
