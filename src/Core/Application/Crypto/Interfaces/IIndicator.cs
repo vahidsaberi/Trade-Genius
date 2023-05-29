@@ -1,6 +1,8 @@
-﻿namespace TradeGenius.WebApi.Application.Crypto.Indicators;
+﻿using TradeGenius.WebApi.Application.Crypto.Models;
 
-public interface IIndicator
+namespace TradeGenius.WebApi.Application.Crypto.Interfaces;
+
+public interface IIndicator : ITransientService
 {
     string Name
     {

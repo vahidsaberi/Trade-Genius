@@ -1,4 +1,4 @@
-﻿namespace TradeGenius.WebApi.Infrastructure.CoinCap;
+﻿namespace TradeGenius.WebApi.Infrastructure.CryptoCurrency.CoinCap;
 public class CoinCapSettings
 {
     public string RESTfullAPI { get; set; }

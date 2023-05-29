@@ -1,0 +1,5 @@
+{
+  "CryptoCompareSettings": {
+    "RESTfullAPI": "https://min-api.cryptocompare.com/data/pricemultifull?fsyms={FROM_SYMBOLS}&tsyms={TO_SYMBOLS}"
+  }
+}

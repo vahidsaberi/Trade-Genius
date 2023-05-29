@@ -1,5 +1,6 @@
 ﻿using TradeGenius.WebApi.Application.Crypto.Enums;
-using TradeGenius.WebApi.Application.Crypto.Indicators;
+using TradeGenius.WebApi.Application.Crypto.Interfaces;
+using TradeGenius.WebApi.Application.Crypto.Models;
 using TradeGenius.WebApi.Domain.CryptoCurrency;
 
 namespace TradeGenius.WebApi.Infrastructure.Indicators;
