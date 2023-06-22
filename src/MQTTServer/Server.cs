@@ -7,14 +7,14 @@ using MQTTnet.Protocol;
 using MQTTnet.Server;
 using System.Text;
 
-namespace MQTTServer
-{
+namespace MQTTServer;
+
     public static class Server
     {
-        private static string _username = "admin";
-        private static string _password = "Bo!2bjaq";
+        private const string Username = "admin";
+        private const string Password = "Bo!2bjaq";
 
-        public static Task Start_Server_With_WebSockets_Support()
+        public static Task StartServerWithWebSocketsSupport()
         {
             /*
              * This sample starts a minimal ASP.NET Webserver including a hosted MQTT server.
@@ -40,14 +40,14 @@ namespace MQTTServer
             return host.RunConsoleAsync();
         }
 
-        sealed class MqttController
+        private sealed class MqttController
         {
             public MqttController()
             {
                 // Inject other services via constructor.
             }
 
-            public Task ValidateConnection(ValidatingConnectionEventArgs e)
+            public static Task ValidateConnection(ValidatingConnectionEventArgs e)
             {
                 e.ReasonCode = MqttConnectReasonCode.Success;
                 if (e.ClientId.Length < 10)
@@ -55,12 +55,12 @@ namespace MQTTServer
                     e.ReasonCode = MqttConnectReasonCode.ClientIdentifierNotValid;
                 }
 
-                if (!e.UserName.Equals(_username))
+                if (!e.UserName.Equals(Username))
                 {
                     e.ReasonCode = MqttConnectReasonCode.BadUserNameOrPassword;
                 }
 
-                if (!e.Password.Equals(_password))
+                if (!e.Password.Equals(Password))
                 {
                     e.ReasonCode = MqttConnectReasonCode.BadUserNameOrPassword;
                 }
@@ -69,52 +69,52 @@ namespace MQTTServer
                 return Task.CompletedTask;
             }
 
-            public Task OnClientConnected(ClientConnectedEventArgs e)
+            public static Task OnClientConnected(ClientConnectedEventArgs e)
             {
                 Console.WriteLine($"Client '{e.ClientId}' connected.");
                 return Task.CompletedTask;
             }
 
-            public Task OnClientDisconnected(ClientDisconnectedEventArgs e)
+            public static Task OnClientDisconnected(ClientDisconnectedEventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Client Disconnected:ClientId:{e.ClientId}");
                 return Task.CompletedTask;
             }
 
-            public Task OnClientSubscribedTopic(ClientSubscribedTopicEventArgs e)
+            public static Task OnClientSubscribedTopic(ClientSubscribedTopicEventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Client subscribed topic. ClientId:{e.ClientId} Topic:{e.TopicFilter.Topic} QualityOfServiceLevel:{e.TopicFilter.QualityOfServiceLevel}");
                 return Task.CompletedTask;
             }
 
-            public Task OnClientUnsubscribedTopic(ClientUnsubscribedTopicEventArgs e)
+            public static Task OnClientUnsubscribedTopic(ClientUnsubscribedTopicEventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Client unsubscribed topic. ClientId:{e.ClientId} Topic:{e.TopicFilter.Length}");
                 return Task.CompletedTask;
             }
 
-            public Task OnStarted(EventArgs e)
+            public static Task OnStarted(EventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Mqtt Server Started on ()...");
                 return Task.CompletedTask;
             }
 
-            public Task OnStopped(EventArgs e)
+            public static Task OnStopped(EventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Mqtt Server Stopped...");
                 return Task.CompletedTask;
             }
 
-            public Task OnInterceptingPublish(InterceptingPublishEventArgs e)
+            public static Task OnInterceptingPublish(InterceptingPublishEventArgs e)
             {
                 Console.WriteLine($"{DateTime.Now} Mqtt Server receive message: {Encoding.UTF8.GetString(e.ApplicationMessage?.Payload)} on topic: {e.ApplicationMessage.Topic}");
                 return Task.CompletedTask;
             }
         }
 
-        sealed class Startup
+        private sealed class Startup
         {
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, MqttController mqttController)
+            public static void Configure(IApplicationBuilder app, IWebHostEnvironment environment, MqttController mqttController)
             {
                 app.UseRouting();
 
@@ -134,18 +134,18 @@ namespace MQTTServer
                          * Attach event handlers etc. if required.
                          */
 
-                        server.ValidatingConnectionAsync += mqttController.ValidateConnection;
-                        server.ClientConnectedAsync += mqttController.OnClientConnected;
-                        server.ClientDisconnectedAsync += mqttController.OnClientDisconnected;
-                        server.ClientSubscribedTopicAsync += mqttController.OnClientSubscribedTopic;
-                        server.ClientUnsubscribedTopicAsync += mqttController.OnClientUnsubscribedTopic;
-                        server.StartedAsync += mqttController.OnStarted;
-                        server.StoppedAsync += mqttController.OnStopped;
-                        server.InterceptingPublishAsync += mqttController.OnInterceptingPublish;
+                        server.ValidatingConnectionAsync += MqttController.ValidateConnection;
+                        server.ClientConnectedAsync += MqttController.OnClientConnected;
+                        server.ClientDisconnectedAsync += MqttController.OnClientDisconnected;
+                        server.ClientSubscribedTopicAsync += MqttController.OnClientSubscribedTopic;
+                        server.ClientUnsubscribedTopicAsync += MqttController.OnClientUnsubscribedTopic;
+                        server.StartedAsync += MqttController.OnStarted;
+                        server.StoppedAsync += MqttController.OnStopped;
+                        server.InterceptingPublishAsync += MqttController.OnInterceptingPublish;
                     });
             }
 
-            public void ConfigureServices(IServiceCollection services)
+            public static void ConfigureServices(IServiceCollection services)
             {
                 services.AddHostedMqttServer(
                     optionsBuilder =>
@@ -160,4 +160,3 @@ namespace MQTTServer
             }
         }
     }
-}
