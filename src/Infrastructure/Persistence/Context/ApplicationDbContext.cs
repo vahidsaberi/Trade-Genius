@@ -4,6 +4,8 @@ using Microsoft.Extensions.Options;
 using TradeGenius.WebApi.Application.Common.Events;
 using TradeGenius.WebApi.Application.Common.Interfaces;
 using TradeGenius.WebApi.Domain.Catalog;
+using TradeGenius.WebApi.Domain.Common.BuildingBlocks;
+using TradeGenius.WebApi.Domain.PersistMessageProcessor;
 using TradeGenius.WebApi.Domain.TaskManager;
 using TradeGenius.WebApi.Infrastructure.Persistence.Configuration;
 
@@ -24,16 +26,43 @@ public class ApplicationDbContext : BaseDbContext
     public DbSet<Domain.TaskManager.Task> Tasks => Set<Domain.TaskManager.Task>();
     public DbSet<TaskHistory> TaskHistories => Set<TaskHistory>();
 
+    public DbSet<PersistMessage> PersistMessages => Set<PersistMessage>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<Category>().ToTable("Categories", SchemaNames.DutyManager);
-        //modelBuilder.Entity<Status>().ToTable("DutyStatuses", SchemaNames.DutyManager);
-        //modelBuilder.Entity<Domain.TaskManager.Task>().ToTable("Duties", SchemaNames.DutyManager);
-        //modelBuilder.Entity<TaskHistory>().ToTable("DutyHistories", SchemaNames.DutyManager);
-
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.HasDefaultSchema(SchemaNames.Catalog);
+        modelBuilder.HasDefaultSchema(SchemaNames.Base);
+    }
 
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        OnBeforeSaving();
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void OnBeforeSaving()
+    {
+        try
+        {
+            foreach (var entry in ChangeTracker.Entries<IVersion>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                        entry.Entity.Version++;
+                        break;
+
+                    case EntityState.Deleted:
+                        entry.Entity.Version++;
+                        break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("try for find IVersion", ex);
+        }
     }
 }

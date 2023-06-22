@@ -1,6 +1,8 @@
-﻿namespace TradeGenius.WebApi.Domain.Common.Contracts;
+﻿using TradeGenius.WebApi.Domain.Common.BuildingBlocks;
 
-public interface IEntity
+namespace TradeGenius.WebApi.Domain.Common.Contracts;
+
+public interface IEntity: IVersion
 {
     List<DomainEvent> DomainEvents { get; }
 }

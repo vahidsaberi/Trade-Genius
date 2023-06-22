@@ -40,6 +40,9 @@ internal static class Startup
                 .AddJsonFile($"{configurationsDirectory}/cryptocompare.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/mqtt.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"{configurationsDirectory}/mqtt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/rabbitmq.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"{configurationsDirectory}/rabbitmq.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+
                 .AddEnvironmentVariables();
         return builder;
     }

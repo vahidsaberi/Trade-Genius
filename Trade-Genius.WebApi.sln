@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrators.SqLite", "src\Mig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectToBrokers", "src\ConnectToBrokers\ConnectToBrokers.csproj", "{07EECDA2-924B-4F27-838E-3AE4984D2237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTServer", "src\MQTTServer\MQTTServer.csproj", "{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTServer", "src\MQTTServer\MQTTServer.csproj", "{F2B3504D-EBF3-4FA8-B7C5-CD4892EDA93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

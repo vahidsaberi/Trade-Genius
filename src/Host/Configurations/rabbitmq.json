@@ -1,0 +1,7 @@
+{
+  "RabbitMQOptions": {
+    "HostName": "localhost",
+    "UserName": "admin",
+    "Password": "Bo!2bjaq"
+  }
+}

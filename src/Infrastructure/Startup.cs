@@ -26,9 +26,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TradeGenius.WebApi.Infrastructure.BackgroundJobs.RecurringJobs;
 using TradeGenius.WebApi.Infrastructure.MQTTClient;
 using TradeGenius.WebApi.Infrastructure.Indicators;
-using TradeGenius.WebApi.Infrastructure.CryptoCurrency.CoinCap;
-using TradeGenius.WebApi.Infrastructure.CryptoCurrency.CryptoCompare;
 using TradeGenius.WebApi.Infrastructure.CryptoCurrency;
+using TradeGenius.WebApi.Infrastructure.PersistMessageProcessor;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
@@ -110,7 +109,9 @@ public static class Startup
             .UseAuthorization()
             .UseRequestLogging(config)
             .UseHangfireDashboard(config)
-            .UseOpenApiDocumentation(config);
+            .UseOpenApiDocumentation(config)
+            .UseCorrelationId()
+        ;
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
     {
