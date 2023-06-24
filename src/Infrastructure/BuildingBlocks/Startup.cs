@@ -33,7 +33,7 @@ internal static class Startup
             {
                 var logger = failed.ServiceProvider.GetService<ILogger>();
                 _logger.Error($@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times,
-                        requiring manual troubleshooting. Message name: {failed.Message.GetName}");
+                        requiring manual troubleshooting. Message name: {failed.Message.GetName()}");
             };
             x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         });

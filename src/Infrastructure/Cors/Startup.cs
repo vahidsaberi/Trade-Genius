@@ -1,5 +1,4 @@
-﻿using TradeGenius.WebApi.Infrastructure.Common.Settings;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

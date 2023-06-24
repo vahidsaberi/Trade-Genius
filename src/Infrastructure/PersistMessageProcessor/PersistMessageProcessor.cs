@@ -196,13 +196,16 @@ public class PersistMessageProcessor : IPersistMessageProcessor
         MessageDeliveryType deliveryType,
         CancellationToken cancellationToken = default)
     {
-        Guard.Against.Null(messageEnvelope.Message, nameof(messageEnvelope.Message));
-
+        if (messageEnvelope.Message is null)
+        {
+            throw new ArgumentNullException(nameof(messageEnvelope.Message));
+        }
+        
         Guid id;
         if (messageEnvelope.Message is IEvent message)
             id = message.EventId;
         else
-            id = NewId.NextGuid();
+            id = Guid.NewGuid();
 
         await _persistMessageDbContext.PersistMessages.AddAsync(
             new PersistMessage(

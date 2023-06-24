@@ -1,4 +1,4 @@
-namespace TradeGenius.WebApi.Infrastructure.Common.Settings;
+namespace TradeGenius.WebApi.Infrastructure.Cors;
 
 public class CorsSettings
 {
